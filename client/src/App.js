@@ -1,41 +1,49 @@
-import React, { useEffect } from 'react';
-import './App.css';
-//import BookingForm from './components/BookingForm';
+// App.js
+import React from 'react';
+import Navbar from './components/Navbar';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import BarberDashboard from './components/BarberDashboard';
+import Features from './pages/Features';
+import ContactUs from './pages/ContactUs';
+import BarberLogin from './components/BarberLogin';
+import RegisterBarber from './components/RegisterBarber';
+import ForgotPassword from './components/ForgotPassword';
+import ResetPassword from './components/ResetPassword';
 
-function App() {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://assets.calendly.com/assets/external/widget.js';
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
 
-  const openMainCalendly = () => {
-    window.Calendly.initPopupWidget({
-      url: 'https://calendly.com/abrahansanchez78/30min?back=1&month=2025-06'
-    });
-  };
+import './global.css';
+import './index.css'; // Just in case it's needed
+
+function AppWrapper() {
+  const location = useLocation();
+
+  // Define which routes should NOT show the Navbar
+  const hideNavbarRoutes = ['/', '/login', '/dashboard'];
+  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
-    <div className="App">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1>BarberConnect</h1>
-          <p>Book with the best — wherever you are.</p>
-          <button className="main-book-btn" onClick={openMainCalendly}>
-            Book Appointment
-          </button>
-        </div>
-      </section>
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<BarberLogin />} />
+        <Route path="/register" element={<RegisterBarber />} />
+        <Route path="/dashboard" element={<BarberDashboard />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
+    </>
+  );
+}
 
-      {/* Booking Form Section 
-      <section className="form-section">
-        <BookingForm />
-      </section>*/}
-      
-    </div>
-    
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
   );
 }
 

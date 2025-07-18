@@ -11,6 +11,11 @@ const appointmentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    barberId: {
+        type: mongoose.Schema.Types.ObjectId, //use objectid for referencing the barber
+        ref: 'Barber',
+        required: true,
+    },
     service: {
         type: String,
         required: true,

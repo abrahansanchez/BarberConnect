@@ -1,0 +1,10 @@
+# Ignore all .env files
+.env
+server/.env
+
+# Optional extras to ignore
+node_modules/
+dist/
+build/
+.vscode/
+.DS_Store

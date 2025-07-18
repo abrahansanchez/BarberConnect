@@ -1,4 +1,4 @@
-/* App.css */
+
 
 body {
   margin: 0;
@@ -77,3 +77,42 @@ body {
 .booking-form button:hover {
   background-color: #005fa3;
 }
+
+
+
+.confirmation-banner {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: bold;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  animation: fadeInOut 5s forwards;
+}
+
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+
+/* App.css */
+.sidebar {
+  width: 250px;
+  background-color: #1f2937;
+  color: white;
+  padding: 20px;
+}
+
+.sidebar h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+
+

@@ -1,0 +1,52 @@
+/* client/src/components/Navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.navbar-center {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-right {
+  display: flex;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.login-btn {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  color: #007bff;
+  font-weight: 600;
+}
+
+.login-btn:hover {
+  background-color: #007bff;
+  color: white;
+}

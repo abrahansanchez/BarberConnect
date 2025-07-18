@@ -41,24 +41,34 @@ Step	Status	Description
 26	✅	Create React app (client/)
 27	✅	Build homepage with hero + Calendly CTA
 28	✅	Setup BookingForm.js (reused in dashboard only)
-29	⬜️	Connect frontend to backend (axios: barber profile data, voicemails, etc.)
-30	⬜️	Show confirmation messages on UI (if needed)
+29	✅	Connect frontend to backend (axios: barber profile data, voicemails, etc.)
+30	✅	Show confirmation messages on UI (if needed)
 
-🟩 Phase 5: Barber Dashboard (Private)
+🟩 Phase 5: Barber Dashboard 
 
-Step	Status	Description
-31	⬜️	Add barber login form & backend route
-32	⬜️	Protect routes (JWT authentication)
-33	⬜️	Create basic dashboard layout (sidebar/nav + content area)
-34	⬜️	Display today's schedule (from Calendly webhook data)
-35	⬜️	Show voicemails and SMS logs (from Twilio DB)
-36	⬜️	Edit profile: update Calendly link, contact info
-37	⬜️	(Optional) Add availability per day (display only)
-38	⬜️	(Optional) Dashboard analytics: # of appointments, response time, etc.
+| Step | Status | Description                                                     |
+| ---- | ------ | --------------------------------------------------------------- |
+| 31   | ✅      | Create **Barber Login form** (frontend)                         |
+| 32   | ✅      | Protect dashboard routes via JWT (localStorage + middleware)    |
+| 33   | ✅     | Dashboard layout (Sidebar + Header + Protected Content section) |
+| 34   | ✅     | Display upcoming appointments (from Calendly DB)                |
+| 35   | ✅     | Show voicemails + SMS logs (Twilio data)                        |
+| 36   | ✅     | Edit profile: update Calendly URL, contact info, bio            |
+| 37   | ✅     | (Optional) View static barber availability                      |
+| 38   | ✅     | (Optional) Dashboard analytics: total appointments, SMS, etc.   |
 
-🟦 Final Phase: Polish + Deploy
 
-Step	Status	Description
-39	⬜️	Final responsive design pass (mobile/tablet view)
-40	⬜️	Deploy full stack (Render or Vercel + MongoDB)
-41	⬜️	Final test: call → book → dashboard updates with Twilio + Calendly
+
+Phase 6: Authentication Features (Extended)
+| Step | Status | Description                                         |
+| ---- | ------ | --------------------------------------------------- |
+| 42   | ✅     | Add **Forgot Password** (request + reset flow)      |
+| 43   | ✅     | Add **Register New Barber** (signup form + backend) |
+
+Phase 7: Final Polish & Deployment
+| Step | Status | Description                                                  |
+| ---- | ------ | ------------------------------------------------------------ |
+| 39   | ✅     | Final responsive design pass (mobile/tablet)                 |
+| 40   | ⬜️     | Deploy backend (Render) + frontend (Vercel)                  |
+| 41   | ⬜️     | Full test: call > book via Calendly > SMS > dashboard update |
+

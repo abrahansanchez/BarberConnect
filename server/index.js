@@ -22,6 +22,8 @@ const smsRoutes = require('./routes/smsRoutes'); // import sms routes
 
 
 
+
+
 const PORT = process.env.PORT || 5000;
 
 //connect to MongoDB using the connection string in the .env file
@@ -35,9 +37,10 @@ app.use('/api/appointments', require('./routes/appointmentRoutes')); // use the 
 app.use('/api/auth', require('./routes/authRoutes')); // use the auth routes for the /api/auth endpoint
 app.use('/api/twilio', require('./routes/twilioRoutes')); // use the twilio routes for the /api/twilio endpoint
 app.use('/api/voicemails', require('./routes/voicemailRoutes')); // use the voicemail routes for the /api/voicemail endpoint
-app.use('/api/twilio/sms', require('./routes/smsRoutes')); // use the sms routes for the /api/sms endpoint
+app.use('/api/sms', require('./routes/smsRoutes')); // use the sms routes for the /api/sms endpoint
 app.use('/api/calendly', require('./routes/calendlyRoutes'));
 app.use('/api/barbers', require('./routes/barberRoutes'));
+
 
 
 

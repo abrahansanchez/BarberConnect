@@ -26,6 +26,20 @@ router.get('/', async (req, res) => {// handle GET requests to /api/appointments
     }
 });
 
+////GET appointment by barber -id
+router.get('/:barberId', async (req, res) => {
+    try {
+        const appointments = await Appointment.find({
+            barberId: req.params.barberId
+        }).sort({ appointmentTime: 1 });
+
+        res.json(appointments); // Send as JSON response
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 
 // handle POST requests to /api/appointments
 router.post('/test/barbers', async (req,res) =>{
@@ -52,7 +66,7 @@ router.post('/test/barbers', async (req,res) =>{
 
 router.post('/', async (req, res) => {
     try {
-        const {clientName, barberName, service, appointmentTime, phoneNumber} = req.body; // destructure the request body
+        const {clientName, barberName,barberId, service, appointmentTime, phoneNumber} = req.body; // destructure the request body
 
         // validate the request body
         if (!clientName || !barberName || !service || !appointmentTime || !phoneNumber) {
@@ -63,6 +77,7 @@ router.post('/', async (req, res) => {
         const newAppointment = new Appointment({
             clientName, 
             barberName,
+            barberId, // use the barberId from the request body
             service,
             appointmentTime,
             phoneNumber

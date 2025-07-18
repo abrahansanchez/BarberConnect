@@ -3,6 +3,21 @@ const router = express.Router();
 const {twiml:{MessagingResponse}} = require('twilio');
 const SMS = require('../models/sms.model');
 
+//GET all SMS messages
+router.get('/:barberId', async (req, res)=> {
+    try {
+        const smsMessages = await SMS.find({
+             barberId: req.params.barberId
+            }).sort({createdAt: -1 });
+        res.json(smsMessages);
+    } catch (error) {
+        console.error('Error fetching SMS messages:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+
+
 //this route is triggered when twilio sends a message 
 router.post('/sms', async (req, res) => {
     const {From, To, Body} = req.body;
