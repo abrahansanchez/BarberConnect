@@ -1,7 +1,7 @@
 // server/routes/voicemailRoutes.js
 const express = require('express');
 const router = express.Router();
-const Voicemail = require('../models/Voicemail.model'); 
+const Voicemail = require('../models/voicemail.model'); 
 const protect = require('../middleware/protect');
 
 // GET all voicemails
