@@ -1,19 +1,13 @@
-const mongoose = require('mongoose');
-const path = require('path');
+// server/config/db.js
+const { neon } = require('@neondatabase/serverless');
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+// ✅ Correct dotenv load path for root .env
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 
+// ✅ Initialize Neon
+const sql = neon(process.env.DATABASE_URL);
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI);
-        console.log('MongoDB connected');
-    } catch (error) {
-        console.error('MongoDB connection error:', error);
-        process.exit(1);
-    }
-};
-
-module.exports = connectDB;
+module.exports = sql;

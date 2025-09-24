@@ -26,8 +26,11 @@ const smsRoutes = require('./routes/smsRoutes'); // import sms routes
 
 const PORT = process.env.PORT || 5000;
 
-//connect to MongoDB using the connection string in the .env file
- connectDB();
+
+const db = require('./config/db'); // ✅ This now loads the Postgres pool
+
+
+
 
 app.use(cors());
 app.use(express.json()); // parse JSON data into javascript objects
@@ -40,6 +43,7 @@ app.use('/api/voicemails', require('./routes/voicemailRoutes')); // use the voic
 app.use('/api/sms', require('./routes/smsRoutes')); // use the sms routes for the /api/sms endpoint
 app.use('/api/calendly', require('./routes/calendlyRoutes'));
 app.use('/api/barbers', require('./routes/barberRoutes'));
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
 
 
 

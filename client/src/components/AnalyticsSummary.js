@@ -11,31 +11,13 @@ const AnalyticsSummary = ({ barberId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [apptRes, vmRes, smsRes] = await Promise.all([
-          fetch(`/api/appointments/${barberId}`),
-          fetch(`/api/voicemails/${barberId}`),
-          fetch(`/api/sms/${barberId}`),
-        ]);
-
-        const appointments = await apptRes.json();
-        const voicemails = await vmRes.json();
-        const sms = await smsRes.json();
-
-        const serviceCount = {};
-        appointments.forEach(a => {
-          if (a.service) {
-            serviceCount[a.service] = (serviceCount[a.service] || 0) + 1;
-          }
-        });
-
-        const topService = Object.entries(serviceCount).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
-
-        setStats({
-          totalAppointments: appointments.length,
-          totalVoicemails: voicemails.length,
-          totalSMS: sms.length,
-          topService,
-        });
+        const res = await fetch(`/api/analytics/${barberId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setStats(data);
+        } else {
+          console.error('Analytics API error:', data);
+        }
       } catch (err) {
         console.error('Error fetching analytics:', err);
       }

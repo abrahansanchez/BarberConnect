@@ -1,8 +1,12 @@
 # Ignore all .env files
 .env
+.env.local
 server/.env
+client/.env
+client/.env.local
 
 # Optional extras to ignore
+client/node_modules/
 node_modules/
 dist/
 build/

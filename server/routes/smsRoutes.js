@@ -1,47 +1,71 @@
 const express = require('express');
 const router = express.Router();
-const {twiml:{MessagingResponse}} = require('twilio');
-const SMS = require('../models/sms.model');
+const { twiml: { MessagingResponse } } = require('twilio');
+const db = require('../config/db'); // Neon DB
 
-//GET all SMS messages
-router.get('/:barberId', async (req, res)=> {
-    try {
-        const smsMessages = await SMS.find({
-             barberId: req.params.barberId
-            }).sort({createdAt: -1 });
-        res.json(smsMessages);
-    } catch (error) {
-        console.error('Error fetching SMS messages:', error);
-        res.status(500).json({ error: 'Server error' });
+// 🔹 POST /api/sms - Manual save (optional use for outbound/bulk logs)
+router.post('/', async (req, res) => {
+  try {
+    const { barberId, direction, phoneNumber, message, status } = req.body;
+
+    if (!barberId || !direction || !phoneNumber || !message) {
+      return res.status(400).json({ error: 'All fields are required' });
     }
+
+    const result = await db`
+      INSERT INTO sms_logs (barber_id, direction, phone_number, message, status)
+      VALUES (${barberId}, ${direction}, ${phoneNumber}, ${message}, ${status || 'sent'})
+      RETURNING *;
+    `;
+
+    res.status(201).json(result[0]);
+  } catch (error) {
+    console.error('Failed to save SMS log:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
-
-
-//this route is triggered when twilio sends a message 
+// 🔹 POST /api/sms/sms - Webhook from Twilio
 router.post('/sms', async (req, res) => {
-    const {From, To, Body} = req.body;
+  const { From, To, Body } = req.body;
 
-    try {
-        //create a new sms record in the database
-        const sms = new SMS({
-            from: From,
-            to: To,
-            body: Body
-        });
-        await sms.save();
+  try {
+    // 💡 Optional: Match From or To to a barber
+    const defaultBarberId = 1; // fallback if you don’t match dynamically
 
-        //send a response back to twilio
-        const response = new MessagingResponse();
-        response.message('Thank you for your message! We will get back to you shortly.');
+    await db`
+      INSERT INTO sms_logs (barber_id, direction, phone_number, message, status)
+      VALUES (${defaultBarberId}, 'inbound', ${From}, ${Body}, 'received')
+    `;
 
-        res.set('Content-Type, text/xml');
-        res.status(200).send(response.toString());
-    } catch (error) {
-        console.error('Failed to save SMS:', error);
-        res.status(500).send('Failed to process SMS');
-    }
+    const response = new MessagingResponse();
+    response.message('Thanks for your message! We will reply shortly.');
+
+    res.set('Content-Type', 'text/xml');
+    res.status(200).send(response.toString());
+  } catch (error) {
+    console.error('Error saving Twilio SMS:', error);
+    res.status(500).send('Failed to save SMS');
+  }
 });
 
-module.exports = router;
+// 🔹 GET /api/sms/:barberId - Get SMS by barber
+router.get('/:barberId', async (req, res) => {
+  try {
+    const { barberId } = req.params;
+    const result = await db`
+      SELECT * FROM sms_logs
+      WHERE barber_id = ${barberId}
+      ORDER BY sent_at DESC
+    `;
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'No SMS logs found for this barber.' });
+    }
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching SMS logs:', error);
+    res.status(500).json({ message: 'Failed to fetch SMS logs.' });
+  }
+});
 
+    module.exports = router;

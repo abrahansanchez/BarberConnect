@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [resetToken, setResetToken] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -10,7 +9,6 @@ const ForgotPassword = () => {
     e.preventDefault();
     setMessage('');
     setError('');
-    setResetToken('');
 
     try {
       const res = await fetch('/api/auth/forgot-password', {
@@ -22,11 +20,10 @@ const ForgotPassword = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message || 'Failed to send reset token.');
+        throw new Error(data.message || 'Failed to send reset email.');
       }
 
-      setMessage('Reset token generated successfully.');
-      setResetToken(data.resetToken);
+      setMessage('Password reset link has been sent to your email.');
     } catch (err) {
       setError(err.message);
     }
@@ -43,20 +40,11 @@ const ForgotPassword = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button type="submit">Send Reset Token</button>
+        <button type="submit">Send Reset Link</button>
       </form>
 
-      {message && <p className="success-message">{message}</p>}
-      {error && <p className="error-message">{error}</p>}
-
-      {resetToken && (
-        <div style={{ marginTop: '1rem' }}>
-          <p><strong>Reset Token:</strong> {resetToken}</p>
-          <p style={{ fontStyle: 'italic', fontSize: '0.85rem' }}>
-            Copy this token to use in the Reset Password screen.
-          </p>
-        </div>
-      )}
+      {message && <p className="success-message" style={{ color: 'green' }}>{message}</p>}
+      {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
