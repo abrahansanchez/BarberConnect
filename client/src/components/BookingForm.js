@@ -23,25 +23,34 @@ const BookingForm = () => {
 
       const payload = {
         ...formData,
-        barberName:storedBarber.name,
-        barberId: storedBarber._id,
+        barberName: storedBarber?.name,
+        barberId: storedBarber?._id,
       };
+
       const res = await fetch('/api/appointments', {
-        method:'POST',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
-      const result = await res.json();
-      console.log("Submitted data:", formData); // 👈 log form data
-    console.log("Server response:", result); 
+      let result;
+      try {
+        result = await res.json(); // Try parsing JSON
+      } catch (jsonErr) {
+        const text = await res.text(); // fallback to plain text
+        console.error('Non-JSON response:', text);
+        throw new Error('Server returned invalid response');
+      }
+
+      console.log("Submitted data:", payload);
+      console.log("Server response:", result);
 
       if (!res.ok) {
-        throw new Error('Failed to create appointment');
+        throw new Error(result?.error || 'Failed to create appointment');
       }
-      
+
       setSuccess('Appointment booked successfully!');
       setError(null);
 
@@ -51,11 +60,10 @@ const BookingForm = () => {
         phoneNumber: '',
         service: '',
         appointmentTime: '',
-      });
-
+       });
     } catch (err) {
-      console.error(err);
-      setError('There was an error booking the appointment.');
+      console.error('Booking Error:', err);
+      setError(err.message || 'There was an error booking the appointment.');
       setSuccess(null);
     }
   };
@@ -106,7 +114,9 @@ const BookingForm = () => {
         />
       </div>
 
-      <button type="submit" className="logout-button">Book Appointment</button>
+      <button type="submit" className="logout-button">
+        {success ? 'Booked!' : 'Book Appointment'}
+      </button>
 
       {success && <p className="success-message">{success}</p>}
       {error && <p className="error-message">{error}</p>}
