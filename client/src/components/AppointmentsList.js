@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AppointmentsList = ({ barberId, searchQuery }) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch(`/api/appointments/${barberId}`);
+        const res = await fetch(`${apiUrl}/api/appointments/${barberId}`);
         const data = await res.json();
         setAppointments(data);
       } catch (error) {

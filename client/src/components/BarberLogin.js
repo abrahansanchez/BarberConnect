@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import backgroundImg from '../assets/nathon-oski-EW_rqoSdDes-unsplash.jpg';
+import { apiUrl } from '../utils/api';
 
 const BarberLogin = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const BarberLogin = () => {
     e.preventDefault();
 
     try {
-     const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/login`, {
+     const res = await fetch(`${apiUrl}/api/auth/login`, {
        method: 'POST',
       headers: {
       'Content-Type': 'application/json',

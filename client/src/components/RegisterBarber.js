@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../utils/api';
 
 const RegisterBarber = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const RegisterBarber = () => {
     setSuccess('');
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/auth/register`, {
+      const res = await fetch(`${apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -31,7 +31,8 @@ const BookingForm = () => {
         barberId: storedBarber._id,
       };
 
-      const res = await fetch('/api/appointments', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiUrl}/api/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

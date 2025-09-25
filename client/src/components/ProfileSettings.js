@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const daysOfWeek = [
   'Monday', 'Tuesday', 'Wednesday',
   'Thursday', 'Friday', 'Saturday', 'Sunday'
@@ -51,7 +53,7 @@ const ProfileSettings = ({ barber }) => {
     setErrorMsg('');
 
     try {
-      const res = await fetch(`/api/barbers/${barber._id}`, {
+      const res = await fetch(`${apiUrl}/api/barbers/${barber._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

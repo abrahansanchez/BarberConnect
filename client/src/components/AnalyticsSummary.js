@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const AnalyticsSummary = ({ barberId }) => {
   const [stats, setStats] = useState({
     totalAppointments: 0,
@@ -11,7 +13,7 @@ const AnalyticsSummary = ({ barberId }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`/api/analytics/${barberId}`);
+        const res = await fetch(`${apiUrl}/api/analytics/${barberId}`);
         const data = await res.json();
         if (res.ok) {
           setStats(data);

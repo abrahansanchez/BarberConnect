@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const SmsLogList = ({ barberId, searchQuery }) => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const res = await fetch(`/api/sms/${barberId}`);
+        const res = await fetch(`${apiUrl}/api/sms/${barberId}`);
         const data = await res.json();
         setLogs(data);
       } catch (error) {

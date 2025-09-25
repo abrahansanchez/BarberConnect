@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const VoicemailList = ({ barberId, searchQuery }) => {
   const [voicemails, setVoicemails] = useState([]);
 
   useEffect(() => {
     const fetchVoicemails = async () => {
       try {
-        const res = await fetch(`/api/voicemails/${barberId}`);
-        const data = await res.json();
-        
+        const res = await fetch(`${apiUrl}/api/voicemails/${barberId}`);
+         const data = await res.json();
         setVoicemails(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Error fetching voicemails:', err);
