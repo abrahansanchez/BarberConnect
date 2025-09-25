@@ -21,10 +21,14 @@ const BookingForm = () => {
     try {
       const storedBarber = JSON.parse(localStorage.getItem('barber'));
 
+      if (!storedBarber?._id || !storedBarber?.name) {
+        throw new Error('Barber data not found. Please log in again.');
+      }
+
       const payload = {
         ...formData,
-        barberName: storedBarber?.name,
-        barberId: storedBarber?._id,
+        barberName: storedBarber.name,
+        barberId: storedBarber._id,
       };
 
       const res = await fetch('/api/appointments', {
@@ -35,32 +39,32 @@ const BookingForm = () => {
         body: JSON.stringify(payload),
       });
 
+      // Check status BEFORE parsing body
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Server error:', errorText);
+        throw new Error(errorText || 'Failed to create appointment');
+      }
+
       let result;
       try {
-        result = await res.json(); // Try parsing JSON
+        result = await res.json();
       } catch (jsonErr) {
-        const text = await res.text(); // fallback to plain text
-        console.error('Non-JSON response:', text);
-        throw new Error('Server returned invalid response');
+        throw new Error('Server returned invalid JSON response');
       }
 
       console.log("Submitted data:", payload);
-      console.log("Server response:", result);
+       console.log("Server response:", result);
 
-      if (!res.ok) {
-        throw new Error(result?.error || 'Failed to create appointment');
-      }
-
-      setSuccess('Appointment booked successfully!');
+       setSuccess('Appointment booked successfully!');
       setError(null);
 
-      // Clear form
-      setFormData({
+       setFormData({
         clientName: '',
         phoneNumber: '',
         service: '',
         appointmentTime: '',
-       });
+      });
     } catch (err) {
       console.error('Booking Error:', err);
       setError(err.message || 'There was an error booking the appointment.');
